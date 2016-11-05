@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitterStyleApplication.DAL.Contracts.Repositories;
 using TwitterStyleApplication.Domain.Entities;
 using TwitterStyleApplication.Services.Contracts;
@@ -53,6 +54,7 @@ namespace TwitterStyleApplication.Services.Implementation
 			{
 				Email = modelDto.Email,
 				UserName = modelDto.Email,
+				Tweets = new List<Tweet>()
 			};
 			await _userRepository.CreateAsync(user, modelDto.Password);
 			return State;

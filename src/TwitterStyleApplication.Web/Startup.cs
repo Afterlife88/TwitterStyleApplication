@@ -17,11 +17,13 @@ using TwitterStyleApplication.DAL;
 using TwitterStyleApplication.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using TwitterStyleApplication.DAL.Configuration;
+using TwitterStyleApplication.DAL.Contracts;
 using TwitterStyleApplication.DAL.Contracts.Initializers;
 using TwitterStyleApplication.DAL.Contracts.Repositories;
 using TwitterStyleApplication.DAL.Repositories;
 using TwitterStyleApplication.Services.Contracts;
 using TwitterStyleApplication.Services.Implementation;
+using TwitterStyleApplication.Web.Configuration;
 
 namespace TwitterStyleApplication.Web
 {
@@ -75,6 +77,9 @@ namespace TwitterStyleApplication.Web
 			services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<ITweetsService, TweetsService>();
+			services.AddScoped<ITweetRepository, TweetRepository>();
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 		}
 
@@ -91,8 +96,8 @@ namespace TwitterStyleApplication.Web
 					.AllowAnyMethod()
 					.AllowAnyOrigin());
 
-
-			//AutomapperConfiguration.Load();
+			AutomapperConfiguration.Load();
+		
 
 			app.UseDeveloperExceptionPage();
 			app.UseMvc();

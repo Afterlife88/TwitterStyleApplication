@@ -6,6 +6,7 @@ namespace TwitterStyleApplication.DAL
 {
     public class DataDbContext : IdentityDbContext<ApplicationUser>
     {
+		public DbSet<Tweet> Tweets { get; set; } 
 		public DataDbContext(DbContextOptions<DataDbContext> options) : base(options)
 		{ }
 	}
