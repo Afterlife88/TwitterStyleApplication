@@ -18,8 +18,8 @@ namespace TwitterStyleApplication.DAL
 
 			base.OnModelCreating(builder);
 
-			builder.Entity<Subscription>()
-				.HasKey(s => new { s.PublisherId, s.SubscriberId });
+			//builder.Entity<Subscription>()
+			//	.HasKey(s => new { s.PublisherId, s.SubscriberId });
 
 			builder.Entity<Subscription>()
 			   .HasOne(s => s.Publisher)

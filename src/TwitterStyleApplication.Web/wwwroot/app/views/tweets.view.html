@@ -1,0 +1,21 @@
+﻿<form name="modalForm">
+  <div class="form-group" ng-class="{ 'has-error': modalForm.modalInput.$invalid }">
+    <textarea name="modalInput" class="form-control" rows="3" ng-model="vm.tweetData" required></textarea>
+    <span ng-show="modalForm.modalInput.$error.required" class="help-block">Text is required.</span>
+  </div>
+
+  <button class="btn btn-primary pull-right" ng-click="vm.postTweet(vm.tweetData)">Post tweet</button>
+</form>
+
+
+<br/>
+<br/>
+<br />
+<div class="panel panel-default" ng-repeat="tweet in vm.tweets">
+  <div class="panel-body">
+    <span class="text-primary" id="tweet-author">Author: {{tweet.userName}}</span>
+    <br />
+    <span class="text-success">Creation Date: {{tweet.creationDate | date:'HH:mm:ss dd/MM/yyyy'}}</span>
+    <p class="text-info tweet-text">{{tweet.message}}</p>
+  </div>
+</div>

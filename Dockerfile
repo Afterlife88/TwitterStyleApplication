@@ -3,29 +3,24 @@ FROM microsoft/dotnet:latest
 # Set env variables
 ENV ASPNETCORE_URLS http://*:5000
 
-COPY /src/FileStorage.Web /app/src/FileStorage.Web
-COPY /src/FileStorage.Domain /app/src/FileStorage.Domain
-COPY /src/FileStorage.Utils /app/src/FileStorage.Utils
-COPY /src/FileStorage.Services /app/src/FileStorage.Services
-COPY /src/FileStorage.DAL /app/src/FileStorage.DAL
+COPY /src/TwitterStyleApplication.Web /app/src/TwitterStyleApplication.Web
+COPY /src/TwitterStyleApplication.Services /app/src/TwitterStyleApplication.Services
+COPY /src/TwitterStyleApplication.Domain /app/src/TwitterStyleApplication.Domain
+COPY /src/TwitterStyleApplication.DAL /app/src/TwitterStyleApplication.DAL
 
 # Restore domain
-WORKDIR /app/src/FileStorage.Domain
+WORKDIR /app/src/TwitterStyleApplication.Domain
 RUN ["dotnet", "restore"]
 
 # Restore DAL
-WORKDIR /app/src/FileStorage.DAL
+WORKDIR /app/src/TwitterStyleApplication.DAL
 RUN ["dotnet", "restore"]
 
 # Restore services
-WORKDIR /app/src/FileStorage.Services
+WORKDIR /app/src/TwitterStyleApplication.Services
 RUN ["dotnet", "restore"]
 
-# Restore utils
-WORKDIR /app/src/FileStorage.Utils
-RUN ["dotnet", "restore"]
-
-WORKDIR /app/src/FileStorage.Web
+WORKDIR /app/src/TwitterStyleApplication.Web
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
  

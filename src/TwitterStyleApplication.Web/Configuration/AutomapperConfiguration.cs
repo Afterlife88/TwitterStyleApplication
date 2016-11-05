@@ -33,6 +33,10 @@ namespace TwitterStyleApplication.Web.Configuration
 
 					.ForMember(dest => dest.UserName, dto => dto.MapFrom(src => src.Author.UserName))
 					.ForMember(dest => dest.CreationDate, dto => dto.MapFrom(src => src.DateCreated));
+
+				config.CreateMap<ApplicationUser, UserDTO>()
+					.ForMember(dest => dest.UserName, dto => dto.MapFrom(src => src.UserName))
+					.ForMember(dest => dest.UserEmail, dto => dto.MapFrom(src => src.Email));
 			});
 		}
 	}

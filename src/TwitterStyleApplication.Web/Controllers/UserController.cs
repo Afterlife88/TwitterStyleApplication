@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TwitterStyleApplication.DAL.Contracts;
 using TwitterStyleApplication.Services;
 using TwitterStyleApplication.Services.Contracts;
+using TwitterStyleApplication.Services.DTO;
 using TwitterStyleApplication.Services.RequestModels;
 
 namespace TwitterStyleApplication.Web.Controllers
@@ -22,7 +23,7 @@ namespace TwitterStyleApplication.Web.Controllers
 		}
 
 		/// <summary>
-		/// Creates a user in file storage service
+		/// Creates a user
 		/// </summary>
 		/// <remarks>
 		/// 
@@ -59,8 +60,37 @@ namespace TwitterStyleApplication.Web.Controllers
 				return StatusCode(500, ex.Message);
 			}
 		}
+		/// <summary>
+		/// Return all user with email and username
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		[Authorize(ActiveAuthenticationSchemes = "Bearer")]
+		public async Task<IActionResult> AllUsers()
+		{
+			try
+			{
+				var currentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-		[Authorize]
+				var serviceResponse = await _userService.AllUser(currentUser);
+
+
+				if (!_userService.State.IsValid)
+					return ServiceResponseDispatcher.ExecuteServiceResponse(this, _userService.State.TypeOfError,
+						_userService.State.ErrorMessage);
+				return Ok(serviceResponse);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex.Message);
+			}
+		}
+		/// <summary>
+		/// Follow requested user
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		[Authorize(ActiveAuthenticationSchemes = "Bearer")]
 		[Route("follow")]
 		[HttpPost]
 		public async Task<IActionResult> Follow([FromBody]FollowUnfollowRequest request)
@@ -82,6 +112,37 @@ namespace TwitterStyleApplication.Web.Controllers
 				return StatusCode(500, ex.Message);
 			}
 		}
+		/// <summary>
+		/// Get follow and unfollow user list
+		/// </summary>
+		/// <returns></returns>
+		[Authorize(ActiveAuthenticationSchemes = "Bearer")]
+		[Route("relationship")]
+		[HttpGet]
+		[ProducesResponseType(typeof(RelationshipDto), 200)]
+		public async Task<IActionResult> GetRelationshipToUser()
+		{
+			try
+			{
+				var userEmail = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+				var serviceResponse = await _userService.GetRelationship(userEmail);
+				if (!_userService.State.IsValid)
+					return ServiceResponseDispatcher.ExecuteServiceResponse(this, _userService.State.TypeOfError,
+						_userService.State.ErrorMessage);
+
+				return Ok(serviceResponse);
+			}
+			catch (Exception ex)
+			{
+
+				return StatusCode(500, ex.Message);
+			}
+		}
+		/// <summary>
+		/// Unfollow requested user
+		/// </summary>
+		/// <returns></returns>
 		[Authorize]
 		[Route("unfollow")]
 		[HttpPost]
@@ -92,7 +153,7 @@ namespace TwitterStyleApplication.Web.Controllers
 				var currentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 				var response = await _userService.UnFollowUser(currentUser, request.Username);
-				
+
 
 				if (!_userService.State.IsValid)
 					return ServiceResponseDispatcher.ExecuteServiceResponse(this, _userService.State.TypeOfError,

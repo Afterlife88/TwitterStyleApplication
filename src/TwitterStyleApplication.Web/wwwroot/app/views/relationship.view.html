@@ -1,0 +1,35 @@
+﻿<h1>Following</h1>
+<table id="datatable_fixed_column" class="table table-striped table-bordered table-hover" width="100%">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>User name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in vm.following">
+      <td>{{item.userEmail}}</td>
+      <td>{{item.userName}}</td>
+      <td><a href="javascript:void(0);" class="btn btn-xs btn-primary" ng-click="vm.unfollow(item.userName)">Unfollow</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h1>Followers</h1>
+<table id="datatable_fixed_column" class="table table-striped table-bordered table-hover" width="100%">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>User name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in vm.followers">
+      <td>{{item.userEmail}}</td>
+      <td>{{item.userName}}</td>
+      <td><a href="javascript:void(0);" class="btn btn-xs btn-primary" ng-click="vm.follow(item.userName)">Follow</a></td>
+    </tr>
+  </tbody>
+</table>

@@ -28,7 +28,9 @@ namespace TwitterStyleApplication.DAL.Repositories
 			var publishers = userData.Following.ToArray();
 			var publishersIds = userData.Following.Select(p => p.SubscriberId);
 			var tweets =
-				await _dataDbContext.Tweets.Include(r => r.Author).Where(s => publishersIds.Contains(s.Author.Id) || s.Author == userData).ToArrayAsync();
+				await _dataDbContext
+				.Tweets.Include(r => r.Author)
+				.Where(s => publishersIds.Contains(s.Author.Id) || s.Author == userData).OrderByDescending(r => r.DateCreated).ToArrayAsync();
 
 			return tweets;
 		}

@@ -1,0 +1,190 @@
+﻿body {
+    padding-top: 105px;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+    .form-signin .form-signin-heading {
+        margin-bottom: 10px;
+    }
+
+    .form-signin .form-control {
+        position: relative;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+
+.email-input {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.password-input {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-signin button[type="submit"] {
+    margin-top: 20px;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn-file input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+        opacity: 0;
+    }
+
+.upload-area {
+    border: solid 1px #aaa;
+    min-height: 100px;
+    background: #eee;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.file-item {
+    position: relative;
+    display: inline-block;
+    margin: 30px 0 0 30px;
+    vertical-align: top;
+    text-align: center;
+    width: 120px;
+    padding-top: 5px;
+}
+
+.active {
+    background-color: deepskyblue;
+    border-color: dodgerblue;
+    border-style: solid;
+}
+
+    .active span {
+        white-space: normal !important;
+    }
+
+.file-item span {
+    display: inline-block;
+    text-align: center;
+    margin: auto;
+    word-wrap: break-word;
+    max-width: 90%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.file-item input {
+    display: inline-block;
+    text-align: center;
+    margin: 5px auto;
+    word-wrap: break-word;
+    max-width: 90%;
+}
+
+.file-item-img {
+    display: block;
+    height: 100px;
+    width: 100px;
+    margin: auto;
+}
+
+.modal-header {
+    text-align: center;
+}
+
+#menu-item {
+    position: fixed;
+}
+
+#header-container {
+    margin: 10px 0 0 0;
+    border: solid 1px #aaa;
+    background: #eee;
+    border-bottom: none;
+}
+
+#property-row {
+    min-height: 60px;
+}
+
+#memory-info {
+    padding-top: 30px;
+}
+
+    #memory-info .progress {
+        margin-bottom: 5px !important;
+        max-width: 250px;
+    }
+
+#property-row .common-info {
+    padding-top: 50px;
+}
+
+#property-row .specific-info {
+    margin-top: 10px;
+}
+
+@media(max-width:767px) {
+    #memory-info {
+        padding-top: 5px;
+    }
+
+    #property-row .common-info {
+        padding-top: 5px;
+    }
+}
+
+.spinner:before {
+    background-color: rgba(49, 37, 37, 0.2);
+    border-radius: 6px;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    content: " ";
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    vertical-align: inherit;
+}
+
+#tweet-author {
+    font-weight: bold;
+}
+
+.tweet-text {
+    margin-top: 10px;
+}

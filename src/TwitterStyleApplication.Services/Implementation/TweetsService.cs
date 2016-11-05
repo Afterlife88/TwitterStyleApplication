@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using TwitterStyleApplication.DAL.Contracts;
@@ -31,6 +32,7 @@ namespace TwitterStyleApplication.Services.Implementation
 
 				var tweets = await _unitOfWork.TweetRepository.GetReleatedTweets(user.Id);
 
+				
 				return Mapper.Map<IEnumerable<Tweet>, IEnumerable<TweetDTO>>(tweets);
 
 			}
