@@ -21,9 +21,25 @@ namespace TwitterStyleApplication.Web.Controllers
 		}
 		// GET: api/tweets
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public async Task<IActionResult> Get()
 		{
-			return new string[] { "value1", "value2" };
+			try
+			{
+				var userEmail = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+				var serviceResponse = await _tweetsService.GetReleatedTweets(userEmail);
+
+				if (!_tweetsService.State.IsValid)
+					return ServiceResponseDispatcher.ExecuteServiceResponse(this, _tweetsService.State.TypeOfError,
+						_tweetsService.State.ErrorMessage);
+
+				return Ok(serviceResponse);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex.Message);
+
+			}
 		}
 
 		// GET api/values/5

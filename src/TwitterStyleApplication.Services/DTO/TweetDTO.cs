@@ -8,5 +8,7 @@ namespace TwitterStyleApplication.Services.DTO
 		public DateTime CreationDate { get; set; }
 		public string Message { get; set; }
 		public Guid? UserId { get; set; }
+
+		public string UserName { get; set; }
 	}
 }

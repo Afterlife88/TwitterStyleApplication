@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TwitterStyleApplication.DAL.Contracts.Repositories;
@@ -10,10 +11,11 @@ namespace TwitterStyleApplication.DAL.Repositories
 	public class UserRepository : IUserRepository
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
-
-		public UserRepository(UserManager<ApplicationUser> userManager)
+		private readonly DataDbContext _dbContext;
+		public UserRepository(UserManager<ApplicationUser> userManager, DataDbContext dbContext)
 		{
 			_userManager = userManager;
+			_dbContext = dbContext;
 		}
 
 		public async Task<ApplicationUser> GetUserById(string userId)
@@ -40,7 +42,11 @@ namespace TwitterStyleApplication.DAL.Repositories
 		}
 		public async Task<ApplicationUser> GetUserByNameAsync(string username)
 		{
-			return await _userManager.FindByNameAsync(username);
+			return await _dbContext.Users.Where(r => r.UserName == username)
+				.Include(r => r.Followers)
+				.Include(s => s.Following)
+				.FirstOrDefaultAsync();
+			//return await _userManager.FindByNameAsync(username);
 		}
 	}
 }

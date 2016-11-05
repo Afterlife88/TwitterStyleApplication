@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TwitterStyleApplication.DAL.Contracts;
+using TwitterStyleApplication.Services;
 using TwitterStyleApplication.Services.Contracts;
 using TwitterStyleApplication.Services.RequestModels;
 
@@ -12,6 +15,7 @@ namespace TwitterStyleApplication.Web.Controllers
 	public class UsersController : Controller
 	{
 		private readonly IUserService _userService;
+
 		public UsersController(IUserService userService)
 		{
 			_userService = userService;
@@ -56,18 +60,50 @@ namespace TwitterStyleApplication.Web.Controllers
 			}
 		}
 
-		//[Authorize]
-		//public async Task<IActionResult> Follow(string userName)
-		//{
-		//	try
-		//	{
+		[Authorize]
+		[Route("follow")]
+		[HttpPost]
+		public async Task<IActionResult> Follow([FromBody]FollowUnfollowRequest request)
+		{
+			try
+			{
+				var currentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-		//	}
-		//	catch (Exception)
-		//	{
+				var response = await _userService.FollowUser(currentUser, request.Username);
+
+				if (!_userService.State.IsValid)
+					return ServiceResponseDispatcher.ExecuteServiceResponse(this, _userService.State.TypeOfError,
+						_userService.State.ErrorMessage);
+
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex.Message);
+			}
+		}
+		[Authorize]
+		[Route("unfollow")]
+		[HttpPost]
+		public async Task<IActionResult> Unfollow([FromBody] FollowUnfollowRequest request)
+		{
+			try
+			{
+				var currentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+				var response = await _userService.UnFollowUser(currentUser, request.Username);
 				
-		//		throw;
-		//	}
-		//}
+
+				if (!_userService.State.IsValid)
+					return ServiceResponseDispatcher.ExecuteServiceResponse(this, _userService.State.TypeOfError,
+						_userService.State.ErrorMessage);
+
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex.Message);
+			}
+		}
 	}
 }

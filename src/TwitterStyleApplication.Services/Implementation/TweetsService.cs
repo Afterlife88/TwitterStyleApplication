@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using TwitterStyleApplication.DAL.Contracts;
@@ -22,11 +23,29 @@ namespace TwitterStyleApplication.Services.Implementation
 			State = new ServiceState();
 		}
 
+		public async Task<IEnumerable<TweetDTO>> GetReleatedTweets(string userEmail)
+		{
+			try
+			{
+				var user = await _unitOfWork.UserRepository.GetUserAsync(userEmail);
+
+				var tweets = await _unitOfWork.TweetRepository.GetReleatedTweets(user.Id);
+
+				return Mapper.Map<IEnumerable<Tweet>, IEnumerable<TweetDTO>>(tweets);
+
+			}
+			catch (Exception ex)
+			{
+				State.ErrorMessage = ex.Message;
+				State.TypeOfError = TypeOfServiceError.ServiceError;
+				return null;
+			}
+		}
 		public async Task<TweetDTO> CreateTweet(string userEmail, CreateTweetRequest request)
 		{
 			try
 			{
-				var user = await _unitOfWork.UserRepository.GetUserByNameAsync(userEmail);
+				var user = await _unitOfWork.UserRepository.GetUserAsync(userEmail);
 
 				var tweet = new Tweet() { Author = user, DateCreated = DateTime.Now, MessageData = request.MesssageData };
 

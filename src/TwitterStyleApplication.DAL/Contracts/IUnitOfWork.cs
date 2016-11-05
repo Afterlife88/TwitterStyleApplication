@@ -7,6 +7,7 @@ namespace TwitterStyleApplication.DAL.Contracts
 	{
 		IUserRepository UserRepository { get; }
 		ITweetRepository TweetRepository { get; }
+		DataDbContext DataDbContext { get; }
 		/// <summary>
 		/// Save changes in database
 		/// </summary>

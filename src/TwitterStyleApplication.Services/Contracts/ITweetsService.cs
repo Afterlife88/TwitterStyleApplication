@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitterStyleApplication.Services.DTO;
 using TwitterStyleApplication.Services.RequestModels;
 using TwitterStyleApplication.Services.ServiceModels;
@@ -9,5 +10,6 @@ namespace TwitterStyleApplication.Services.Contracts
 	{
 		ServiceState State { get; }
 		Task<TweetDTO> CreateTweet(string userEmail, CreateTweetRequest request);
+		Task<IEnumerable<TweetDTO>> GetReleatedTweets(string userEmail);
 	}
 }

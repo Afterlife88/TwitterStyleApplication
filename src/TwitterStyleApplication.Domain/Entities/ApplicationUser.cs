@@ -7,10 +7,15 @@ namespace TwitterStyleApplication.Domain.Entities
 {
 	public class ApplicationUser : IdentityUser
 	{
+		public ApplicationUser()
+		{
+			this.Following = new List<Subscription>();
+			this.Followers = new List<Subscription>();
+		}
 		[Required]
 		public override string Email { get; set; }
-		public virtual ICollection<ApplicationUser> Followings { get; set; }
-		public virtual ICollection<ApplicationUser> Followers { get; set; }
-		public virtual ICollection<Tweet> Tweets { get; set; }
+		public List<Subscription> Following { get; set; }
+
+		public List<Subscription> Followers { get; set; }
 	}
 }

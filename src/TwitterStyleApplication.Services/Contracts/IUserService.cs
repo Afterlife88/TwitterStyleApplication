@@ -8,5 +8,8 @@ namespace TwitterStyleApplication.Services.Contracts
     {
 		ServiceState State { get; }
 		Task<ServiceState> CreateAsync(RegistrationRequest model);
-	}
+	    Task<ServiceState> FollowUser(string callerUserEmail, string followUserName);
+
+	    Task<ServiceState> UnFollowUser(string callerEmail, string unfollowUserName);
+    }
 }

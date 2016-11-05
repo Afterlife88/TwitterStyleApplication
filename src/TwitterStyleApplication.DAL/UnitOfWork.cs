@@ -6,9 +6,11 @@ namespace TwitterStyleApplication.DAL
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		private DataDbContext DataDbContext { get; }
+	
 		public IUserRepository UserRepository { get; }
 		public ITweetRepository TweetRepository { get; }
+		public DataDbContext DataDbContext { get; }
+
 		#region Constructors / Destructors
 
 		public UnitOfWork(DataDbContext dataDbContext,
