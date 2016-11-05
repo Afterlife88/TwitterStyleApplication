@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -66,6 +67,9 @@ namespace TwitterStyleApplication.Web.Controllers
 		/// <returns></returns>
 		[HttpGet]
 		[Authorize(ActiveAuthenticationSchemes = "Bearer")]
+		[ProducesResponseType(typeof(IEnumerable<UserDTO>), 200)]
+		[ProducesResponseType(typeof(UnauthorizedResult), 401)]
+		[ProducesResponseType(typeof(InternalServerErrorResult), 500)]
 		public async Task<IActionResult> AllUsers()
 		{
 			try
@@ -97,6 +101,10 @@ namespace TwitterStyleApplication.Web.Controllers
 		{
 			try
 			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
 				var currentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 				var response = await _userService.FollowUser(currentUser, request.Username);
@@ -150,6 +158,10 @@ namespace TwitterStyleApplication.Web.Controllers
 		{
 			try
 			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
 				var currentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 				var response = await _userService.UnFollowUser(currentUser, request.Username);

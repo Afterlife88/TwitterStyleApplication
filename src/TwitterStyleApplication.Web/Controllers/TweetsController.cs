@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TwitterStyleApplication.Services;
 using TwitterStyleApplication.Services.Contracts;
+using TwitterStyleApplication.Services.DTO;
 using TwitterStyleApplication.Services.RequestModels;
 
 namespace TwitterStyleApplication.Web.Controllers
@@ -20,7 +22,15 @@ namespace TwitterStyleApplication.Web.Controllers
 			_tweetsService = tweetsService;
 		}
 		// GET: api/tweets
+		/// <summary>
+		/// Recive all releated tweets to user
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
+		[ProducesResponseType(typeof(IEnumerable<TweetDTO>), 200)]
+		[ProducesResponseType(typeof(BadRequestResult), 400)]
+		[ProducesResponseType(typeof(UnauthorizedResult), 401)]
+		[ProducesResponseType(typeof(InternalServerErrorResult), 500)]
 		public async Task<IActionResult> Get()
 		{
 			try
@@ -42,17 +52,25 @@ namespace TwitterStyleApplication.Web.Controllers
 			}
 		}
 
-	
+
 		// POST api/tweets
 		/// <summary>
-		/// 
+		/// Create a tweet
 		/// </summary>
 		/// <param name="request"></param>
 		[HttpPost]
+		[ProducesResponseType(typeof(OkResult), 200)]
+		[ProducesResponseType(typeof(BadRequestResult), 400)]
+		[ProducesResponseType(typeof(UnauthorizedResult), 401)]
+		[ProducesResponseType(typeof(InternalServerErrorResult), 500)]
 		public async Task<IActionResult> PostTweet([FromBody]CreateTweetRequest request)
 		{
 			try
 			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
 				var userEmail = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 				var serviceResponse = await _tweetsService.CreateTweet(userEmail, request);
@@ -70,6 +88,6 @@ namespace TwitterStyleApplication.Web.Controllers
 			}
 		}
 
-		
+
 	}
 }
