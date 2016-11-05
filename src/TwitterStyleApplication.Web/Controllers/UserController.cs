@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TwitterStyleApplication.Services.Contracts;
 using TwitterStyleApplication.Services.RequestModels;
@@ -54,5 +55,19 @@ namespace TwitterStyleApplication.Web.Controllers
 				return StatusCode(500, ex.Message);
 			}
 		}
+
+		//[Authorize]
+		//public async Task<IActionResult> Follow(string userName)
+		//{
+		//	try
+		//	{
+
+		//	}
+		//	catch (Exception)
+		//	{
+				
+		//		throw;
+		//	}
+		//}
 	}
 }

@@ -42,6 +42,14 @@ namespace TwitterStyleApplication.Services.Implementation
 				State.TypeOfError = TypeOfServiceError.BadRequest;
 				return State;
 			}
+			var checkIfUserExistByUserName = await _userRepository.GetUserByNameAsync(modelDto.UserName);
+			if (checkIfUserExistByUserName != null)
+			{
+				State.ErrorMessage = "User with user name already exist!";
+				State.TypeOfError = TypeOfServiceError.BadRequest;
+				return State;
+			}
+
 			var checkIsUserAlreadyExistWithEmail = await _userRepository.GetUserAsync(modelDto.Email);
 			if (checkIsUserAlreadyExistWithEmail != null)
 			{
@@ -49,12 +57,13 @@ namespace TwitterStyleApplication.Services.Implementation
 				State.TypeOfError = TypeOfServiceError.BadRequest;
 				return State;
 			}
+
 			// Create user
 			var user = new ApplicationUser()
 			{
 				Email = modelDto.Email,
-				UserName = modelDto.Email,
-				Tweets = new List<Tweet>()
+				UserName = modelDto.UserName,
+				//Tweets = new List<Tweet>()
 			};
 			await _userRepository.CreateAsync(user, modelDto.Password);
 			return State;

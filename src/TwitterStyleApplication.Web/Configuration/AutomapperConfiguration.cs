@@ -24,7 +24,7 @@ namespace TwitterStyleApplication.Web.Configuration
 			{
 				config.CreateMap<RegistrationRequest, ApplicationUser>()
 					.ForMember(dest => dest.Email, dto => dto.MapFrom(src => src.Email))
-					.ForMember(dest => dest.UserName, dto => dto.MapFrom(src => src.Email));
+					.ForMember(dest => dest.UserName, dto => dto.MapFrom(src => src.UserName));
 
 				config.CreateMap<Tweet, TweetDTO>()
 					.ForMember(dest => dest.Message, dto => dto.MapFrom(src => src.MessageData))
