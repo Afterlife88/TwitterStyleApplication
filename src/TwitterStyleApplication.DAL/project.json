@@ -1,0 +1,13 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.EntityFrameworkCore": "1.0.1",
+    "NETStandard.Library": "1.6.0",
+    "TwitterStyleApplication.Domain": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {}
+  }
+}

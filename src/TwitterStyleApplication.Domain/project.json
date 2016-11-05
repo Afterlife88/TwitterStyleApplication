@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.AspNetCore.Http.Features": "1.0.0",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
+    "Microsoft.EntityFrameworkCore": "1.0.1",
+    "NETStandard.Library": "1.6.0"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {}
+  }
+}

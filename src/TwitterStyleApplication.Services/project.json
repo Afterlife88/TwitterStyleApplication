@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "System.ComponentModel.Annotations": "4.1.0",
+    "TwitterStyleApplication.DAL": "1.0.0-*",
+    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.0.1"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dnxcore50",
+        "dotnet5.6",
+        "portable-net451+win8"
+      ]
+    }
+  }
+}

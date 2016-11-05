@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>TwtitterStyleApp API</title>
+  <link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css' />
+  <link href="screen.css" rel="stylesheet" />
+  <link href="reset.css" rel="stylesheet" />
+  <link href="custom.css" rel="stylesheet" />
+  <link href="getToken.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+  <script src="lib/shred.bundle.js"></script>
+
+  <script src='lib/object-assign-pollyfill.js' type='text/javascript'></script>
+  <script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+  <script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
+  <script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
+  <script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+  <script src='lib/handlebars-4.0.5.js' type='text/javascript'></script>
+  <script src='lib/lodash.min.js' type='text/javascript'></script>
+  <script src='lib/backbone-min.js' type='text/javascript'></script>
+  <script src='swagger-ui.min.js' type='text/javascript'></script>
+  <script src='lib/highlight.9.1.0.pack.js' type='text/javascript'></script>
+  <script src='lib/highlight.9.1.0.pack_extended.js' type='text/javascript'></script>
+  <script src='lib/jsoneditor.min.js' type='text/javascript'></script>
+  <script src='lib/marked.js' type='text/javascript'></script>
+  <script src='lib/swagger-oauth.js' type='text/javascript'></script>
+  <script src='lib/jquery.leanModal.min.js'></script>
+  <script src='lib/clipboard.min.js'></script>
+  <!-- enabling this will enable oauth2 implicit scope support -->
+  <script src="lib/swagger-oauth.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      var url = window.location.search.match(/url=([^&]+)/);
+      if (url && url.length > 1) {
+        url = url[1];
+      } else {
+        url = "/swagger/v1/swagger.json";
+      }
+      window.swaggerUi = new SwaggerUi({
+        url: url,
+        dom_id: "swagger-ui-container",
+        supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+        onComplete: function (swaggerApi, swaggerUi) {
+          var tokenInfo = '<div id="infoContainer" class="dropDown">' +
+            '<div class="header"><span>Token</span></div><div class="content"><h3>You must authenticate with your email and password to get token for using API. </h3>' +
+            '<strong>Getting token:</strong><br>You have two options to get token<ol>' +
+            '<li>1. You can do it through this page by pressing Authenticate button and use your login and password </li>' +
+            '<li>2. You must make POST request to authentication service by calling <b>/api/token</b><br>To header add <code><b>ConctentType: \'application/x-www-form-urlencoded\'</code></b><br> In body set <b>username=yourUserName&password=yourPassword</b>. <br>On succesfull request you will get on response the acces_token.</li></ol><strong>Using token:</strong><br>After you receive token add this header in your request <br> <b style="font-size: 0.9em">Authorization: Bearer yourToken</b></div></div>';
+          $('#api_info').after(tokenInfo);
+          $('#infoContainer').after('<br><div class="dropDown" id="givenTokenDrop" style="display:none"><div class="header"><span>Your token</span></div><div class="content"><input id="givenToken"><button class="btn" id="copy-button" data-clipboard-target="#givenToken">Copy</button></div></div>');
+          $('pre code').each(function (i, e) {
+            hljs.highlightBlock(e);
+          });
+          $(".header").click(function () {
+            $header = $(this);
+            //getting the next element
+            $content = $header.next();
+            //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+            $content.slideToggle(300, function () {
+            });
+          });
+        },
+        onFailure: function (data) {
+          log("Unable to Load SwaggerUI");
+        },
+        docExpansion: "none",
+        sorter: "alpha"
+      });
+      window.swaggerUi.load();
+      new Clipboard('#copy-button');
+
+      $('#getToken').leanModal({ top: 200, overlay: 0.6, closeButton: ".modal_close" });
+      // TOKEN
+      $('#tokenRequest').click(function () {
+        var username = $('#input_username').val();
+        var password = $('#input_password').val();
+        $("#givenToken").empty();
+        if (username && username.trim() !== "" && password && password.trim() !== "") {
+          // send request to auth service
+          $.ajax({
+            url: '/api/token',
+            type: "post",
+            contenttype: 'application/x-www-form-urlencoded',
+            data: "username=" + username + "&password=" + password,
+            success: function (response) {
+              var bearerToken = response.access_token;
+              var pastedToken = "Bearer " + bearerToken;
+
+
+              $("#givenTokenDrop").css("display", "block");
+              $("#givenToken").val(pastedToken);
+              $(".modal_close").click();
+
+              swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", pastedToken, "header"));
+
+              $('#getToken').remove();
+              // Add loggedAs header
+              var loggedAs = '<div class="input"><a id="loggedAs" href="#" data-sw-translate>Logged as ' + username + '</a></div>';
+              $(loggedAs).insertBefore('#api_selector div.input:last-child');
+            },
+            error: function (xhr, ajaxoptions, thrownerror) {
+              alert("Login failed!");
+            }
+          });
+        }
+      });
+    });
+  </script>
+</head>
+
+<body class="swagger-section">
+  <div id='header'>
+    <div class="swagger-ui-wrap">
+      <a id="logo" style="color: white">TwtitterStyleApp API</a>
+
+      <form id='api_selector'>
+        <div class='input'><a id="getToken" href="#modal">Authenticate</a></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
+  <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+
+  <div id="modal" class="popupContainer" style="display: none;">
+    <header class="popupHeader">
+      <span class="header_title">Login</span>
+      <span class="modal_close"><i class="fa fa-times"></i></span>
+    </header>
+    <section class="popupBody">
+      <div class="user_login">
+        <label>Email</label>
+        <input type="text" id="input_username" />
+        <br />
+        <label>Password</label>
+        <input type="password" id="input_password" />
+        <br />
+        <div class="action_btns">
+          <div class="one_half">
+            <a href="#" id="tokenRequest" class="btn btn_red">Login</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
