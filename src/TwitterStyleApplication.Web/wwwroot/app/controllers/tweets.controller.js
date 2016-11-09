@@ -35,7 +35,7 @@
         init();
 
       }).catch(function (err) {
-        Alertify.error(err.data);
+        Alertify.error(err.data.messsageData[0]);
         console.log(err);
       
       });
